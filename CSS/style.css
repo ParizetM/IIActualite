@@ -107,3 +107,19 @@ footer p {
     grid-column-start: 1;
     grid-column-end: 3;
 }
+
+.actu_container {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    overflow-x: auto;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    overflow-x: auto;
+    width: 900px;
+    margin: 0 auto;
+}

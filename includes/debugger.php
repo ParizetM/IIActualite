@@ -13,17 +13,19 @@
 </style>
 <div id="debugger">
     <?php
-    echo"DEBUGGER : <br/>";
+    echo "DEBUGGER : <br/>";
+    if (isset($_SESSION)) {
         foreach ($_SESSION as $key => $value) {
-            echo $key . " :" . $value."<br/>";
+            echo $key . " :" . $value . "<br/>";
         }
-        echo "Method GET : <br/>";
-        foreach ($_GET as $key => $value) {
-            echo $key . " :" . $value."<br/>";
-        }
-        echo "Method POST : <br/>";
-        foreach ($_POST as $key => $value) {
-            echo $key . " :" . $value."<br/>";
-        }
+    }
+    echo "Method GET : <br/>";
+    foreach ($_GET as $key => $value) {
+        echo $key . " :" . $value . "<br/>";
+    }
+    echo "Method POST : <br/>";
+    foreach ($_POST as $key => $value) {
+        echo $key . " :" . $value . "<br/>";
+    }
     ?>
 </div>
