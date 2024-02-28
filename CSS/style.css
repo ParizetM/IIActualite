@@ -19,6 +19,9 @@ header {
     display: flex;
     flex-direction: row;
 }
+main {
+    padding-top: 200px;
+}
 header img {
     filter: brightness(100);
     width: 70px;
@@ -62,7 +65,7 @@ header a {
     display: flex;
     flex-direction: row;
     gap: 50px;
-    overflow-x: auto;
+    overflow-x: scroll;
 }
 
 footer {
@@ -108,7 +111,7 @@ footer p {
     grid-column-end: 3;
 }
 
-.actu_container {
+.actu_container_article {
     padding-top: 50px;
     display: flex;
     flex-direction: column;
@@ -118,8 +121,16 @@ footer p {
 form {
     display: flex;
     flex-direction: column;
-    gap: 50px;
-    overflow-x: auto;
+    gap: 10px;
     width: 900px;
     margin: 0 auto;
+}
+.tags {
+    color: var(--blue);
+}
+.tags:hover {
+    color: var(--blue);
+    filter: brightness( 1.1);
+    font-weight: bold;
+    text-decoration: underline;
 }

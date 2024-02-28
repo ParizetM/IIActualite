@@ -21,7 +21,7 @@ $stmt->bindParam(':titre', $titre, PDO::PARAM_STR);
 $stmt->bindParam(':message', $message, PDO::PARAM_STR);
 
 $stmt->execute();
-header('Location: Contact.php?envoi=true');
+header('Location: ../index.php?envoi=true');
  }
  
 ?>
@@ -47,12 +47,7 @@ header('Location: Contact.php?envoi=true');
         <h1>Contactez-nous</h1>
         
         <form action="Contact.php" method="post">
-        <?php 
-            if ( isset($_GET['envoi'])&& $_GET['envoi'] == true ) {
-                echo "<h2>Votre message a bien été envoyé!</h2>";
-                $_GET['envoi'] = false; 
-            }
-         ?> 
+        
             <label for="nom">Nom :</label>
             <input type="text" id="nom" name="nom" required>
 

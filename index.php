@@ -23,7 +23,14 @@ require_once "includes/PDO.php";
         ?>
     </header>
     <main>
+    <?php 
+            if ( isset($_GET['envoi'])&& $_GET['envoi'] == true ) {
+                echo "<h1 style='text-align:center;'>Votre message a bien été envoyé!</h1>";
+                $_GET['envoi'] = false; 
+            }
+         ?> 
         <h1> Bienvenue sur les actualité de L'IIA</h1>  
+        
         <div class="actu_container">
             <?php 
                 $sql= "SELECT titre,texte,lien_image,date,auteurs.nom,auteurs.prenom,actualites.id FROM actualites,auteurs WHERE id_auteur = auteurs.id ORDER BY date DESC LIMIT 5";
