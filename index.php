@@ -26,21 +26,21 @@ include "includes/debugger.php";
         <h1> Bienvenue sur les actualité de L'IIA</h1>  
         <div class="actu_container">
             <?php 
-                $sql= "SELECT titre,texte,lien_image,date,auteurs.nom,auteurs.prenom FROM actualites,auteurs WHERE id_auteur = auteurs.id ORDER BY date DESC LIMIT 5";
+                $sql= "SELECT titre,texte,lien_image,date,auteurs.nom,auteurs.prenom,actualites.id FROM actualites,auteurs WHERE id_auteur = auteurs.id ORDER BY date DESC LIMIT 5";
                 $resultat = $pdo->query($sql);
                 while ($donnees = $resultat->fetch(PDO::FETCH_ASSOC)) {
-                    echo '<div class="actualite">';
+                    echo '<div class="actualite"><a href="pages/article.php?'.$donnees['id'].'">';
                     echo '<img src="uploads/'.$donnees['lien_image'].'" alt="image article" title="image article">';
                     echo '<div class="actualite_preview_body">';
                     echo '<h2>'.$donnees['titre'].'</h2>';
                     echo '<p>'.substr($donnees['texte'],0,100).'...</p>';
                     echo '<small>'.$donnees['nom'].' '.$donnees['prenom'].' '.$donnees['date'].'</small>';
                     echo '</div>';
-                    echo '</div>';
+                    echo '</div></a>';
                 }
 
              ?> 
-
+                
          </div>
     </main>
     <footer>

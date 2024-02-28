@@ -1,10 +1,14 @@
 :root {
     --blue: #2c1a5b;
+    --gris-footer: #bfdcea;
 }
 body {
     font-family: sans-serif;
 }
-
+a {
+    text-decoration: none;
+    color: var(--blue);
+ }
 header {
     height: 80px;
     background-color: var(--blue);
@@ -31,8 +35,7 @@ header a {
 .actualite {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+
     width: 300px;
     border: 3px solid var(--blue);
     border-radius: 25px;
@@ -60,4 +63,47 @@ header a {
     flex-direction: row;
     gap: 50px;
     overflow-x: auto;
+}
+
+footer {
+    height: 350px;
+    margin-top: 200px;
+    background-image: url(../medias/filigrane-c-footer.svg);
+    background-repeat: no-repeat;
+    background-color: #bfdcea;
+    display: grid;
+    grid: auto auto / auto auto;
+}
+.footer_map_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 280px;
+    border-right: white solid 2px;
+    margin: auto 10px;
+    width: 800px;
+}
+.footer_link_container {
+  display: flex;
+  flex-direction: row; 
+  height: 300px;
+  align-items: center;
+}
+.footer_link_container a {
+    text-decoration: none;
+    color: var(--blue);
+    font-size: 30px;
+    margin-left: 30px;
+    font-weight: bold;
+}
+
+.footer_link_container a:hover {
+    text-decoration: underline;
+}
+footer p {
+    color: var(--blue);
+
+    text-align: center;
+    grid-column-start: 1;
+    grid-column-end: 3;
 }
