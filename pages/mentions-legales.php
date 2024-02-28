@@ -2,7 +2,7 @@
 
 
 require_once "../includes/PDO.php";
-include "../includes/debugger.php";
+// include "../includes/debugger.php";
 ?>
 
 <!DOCTYPE html>

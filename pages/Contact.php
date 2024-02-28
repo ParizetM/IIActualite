@@ -2,7 +2,7 @@
 
 
 require_once "../includes/PDO.php";
-include "../includes/debugger.php";
+// include "../includes/debugger.php";
 
  if (isset($_POST['nom'],$_POST['prenom'],$_POST['mail'],$_POST['message'],$_POST['titre'])) {
 $nom = $_POST['nom'];
