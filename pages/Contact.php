@@ -10,7 +10,6 @@ $prenom = $_POST['prenom'];
 $mail = $_POST['mail'];
 $titre = $_POST['titre'];
 $message = $_POST['message'];
-echo '<h1>tjkgjlgjgfhjf</h1>';
 $query = "INSERT INTO contacts (nom, prenom, mail, titre, message) VALUES (:nom, :prenom, :mail, :titre, :message)";
 $stmt = $pdo->prepare($query);
 
@@ -23,7 +22,7 @@ $stmt->bindParam(':message', $message, PDO::PARAM_STR);
 $stmt->execute();
 header('Location: ../index.php?envoi=true');
  }
- 
+
 ?>
 
 <!DOCTYPE html>
