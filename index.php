@@ -3,6 +3,7 @@
 
 require_once "includes/PDO.php";
 // include "includes/debugger.php";
+require_once "classes/Actualite.php";
 ?>
 
 <!DOCTYPE html>
@@ -33,19 +34,21 @@ require_once "includes/PDO.php";
         
         <div class="actu_container">
             <?php 
-                $sql= "SELECT titre,texte,lien_image,date,auteurs.nom,auteurs.prenom,actualites.id FROM actualites,auteurs WHERE id_auteur = auteurs.id ORDER BY date DESC LIMIT 5";
+                $sql= "SELECT titre,texte,lien_image,date,auteurs.nom,auteurs.prenom,actualites.id,date_revision,id_auteur,id_tags,sources FROM actualites,auteurs WHERE id_auteur = auteurs.id ORDER BY date DESC LIMIT 5";
                 $resultat = $pdo->query($sql);
                 while ($donnees = $resultat->fetch(PDO::FETCH_ASSOC)) {
-                    echo '<div class="actualite"><a href="pages/article.php?id='.$donnees['id'].'">';
-                    echo '<img src="uploads/'.$donnees['lien_image'].'" alt="image article" title="image article">';
-                    echo '<div class="actualite_preview_body">';
-                    echo '<h2>'.$donnees['titre'].'</h2>';
-                    echo '<p>'.substr($donnees['texte'],0,100).'...</p>';
-                    echo '<small>'.$donnees['nom'].' '.$donnees['prenom'].' '.$donnees['date'].'</small>';
-                    echo '</div>';
-                    echo '</div></a>';
+                    $actualite = new Actualite($donnees['id'],$donnees['titre'],$donnees['texte'],$donnees['lien_image'],$donnees['date'],$donnees['date_revision'],$donnees['prenom'],$donnees['nom'],$donnees['id_tags'],$donnees['sources']);
+                    ?> 
+                    <div class="actualite"><a href="pages/article.php?id=<?=$actualite->id?>">
+                    <img src="uploads/<?=$actualite->lien_image?>" alt="image article" title="image article">
+                    <div class="actualite_preview_body">
+                    <h2><?=$actualite->titre?></h2>
+                    <p><?=$actualite->syntheseTexte()?></p>
+                    <small><?=$actualite->prenom_auteur.$actualite->nom_auteur.$actualite->date?></small>
+                    </div>
+                    </a></div>
+                    <?php
                 }
-
              ?> 
                 
          </div>
