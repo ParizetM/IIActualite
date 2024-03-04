@@ -44,7 +44,7 @@ require_once "classes/Actualite.php";
                     <div class="actualite_preview_body">
                     <h2><?=$actualite->titre?></h2>
                     <p><?=$actualite->syntheseTexte()?></p>
-                    <small><?=$actualite->prenom_auteur.$actualite->nom_auteur.$actualite->date?></small>
+                    <small><?=$actualite->prenom_auteur." ".$actualite->nom_auteur." ".$actualite->getDateFr()?></small>
                     </div>
                     </a></div>
                     <?php

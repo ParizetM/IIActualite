@@ -52,6 +52,9 @@ Class Actualite {
     public function syntheseTexte() :string{
         return substr($this->texte, 0,100)."...";
     }
+    public function getDateFr() : string{
+        return date("d/m/Y", strtotime($this->date));
+    }
     // public function getTitre() :string 
     // {
     //     return $this->titre;
