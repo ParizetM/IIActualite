@@ -1,5 +1,6 @@
-<?php 
-Class Actualite {
+<?php
+class Actualite
+{
     /**id de l'actualité */
     public $id;
     /**titre de l'actualité */
@@ -12,69 +13,92 @@ Class Actualite {
     public $date;
     /**date de modification de l'actualité */
     public $date_revision;
-    /**prenom de l'auteur de l'actualité */
-    public $prenom_auteur;
-    /**nom de l'auteur de l'actualité */
-    public $nom_auteur;
+    /**id de l'auteur */
+    public $id_auteur;
+    private $pdo;
 
     /**tags liées à l'actualité */
     public $id_tags;
     /**sources de l'actualité */
     public $sources;
-    /**Constructeur de la class actualite
-     * @param int $id id de l'actualite
-     * @param string $titre titre de l'actu
-     * @param string $texte texte de l'actu
-     * @param string $lien_image lien de l'image de l'actu
-     * @param string $date date de creation de l'actu
-     * @param string $date_revision date de revision de l'actu
-     * @param int $id_auteur id de l'auteuer de l'actu
-     * @param string $id_tags tags lié a l'actu
-     * @param string $sources sources de l'actu
-     */
-    public function __construct(int $id,string $titre, string $texte, string $lien_image, string $date,string $date_revision,string $prenom_auteur,string $nom_auteur,string $id_tags,string $sources)
+    public static function get5Actualite($pdo)
     {
-        $this->id = $id;
-        $this->titre = $titre;
-        $this->texte = $texte;
-        $this->lien_image = $lien_image;
-        $this->date = $date;
-        $this->date_revision = $date_revision;
-        $this->prenom_auteur = $prenom_auteur;
-        $this->nom_auteur = $nom_auteur;
-        $this->id_tags = $id_tags;
-        $this->sources =  $sources;
+        $host = '127.0.0.1';
+        $db = 'iiactualite';
+        $user = 'root';
+        $pass = '';
+        $port = 3306;
+        $charset = 'utf8mb4';
+
+        $dsn = "mysql:host=$host; dbname=$db;charset=$charset;port=$port";
+        $pdo = new PDO($dsn, $user, $pass);
+        $sql = "SELECT titre,texte,lien_image,date,actualites.id,date_revision,id_auteur,id_tags,sources FROM actualites ORDER BY date DESC LIMIT 5";
+        $resultat = $pdo->query($sql);
+        return $resultat;
     }
-    /**
-     * synthése du texte de l'actualité
-     * - sans parametres
-     */
-    public function syntheseTexte() :string{
-        return substr($this->texte, 0,100)."...";
+    public static function getActualiteArticle($pdo)
+    {
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $sql = "SELECT titre,texte,lien_image,date,actualites.id,date_revision,id_auteur,id_tags,sources FROM actualites WHERE id = " . $id . " ORDER BY date DESC LIMIT 5";
+            $resultat = $pdo->query($sql);
+            return $resultat;
+        } else {
+            header("location: ../index.php");
     }
-    public function getDateFr() : string{
+    }
+    public function __construct(array $values, $pdo)
+    {
+        $this->id = $values['id'];
+        $this->titre = $values['titre'];
+        $this->texte = $values['texte'];
+        $this->lien_image = $values['lien_image'];
+        $this->date = $values['date'];
+        $this->date_revision = $values['date_revision'];
+        $this->id_auteur = $values['id_auteur'];
+        $this->id_tags = $values['id_tags'];
+        $this->pdo = $pdo;
+    }
+    /**Fait la synthse de texte limité a 100caractere */
+    public function syntheseTexte(): string
+    {
+        return substr($this->texte, 0, 100) . "...";
+    }
+    /**donne la date de l'article au format d/m/Y  */
+    public function getDateFr(): string
+    {
         return date("d/m/Y", strtotime($this->date));
     }
-    // public function getTitre() :string 
-    // {
-    //     return $this->titre;
-    // }
-    // public function getTexte() :string
-    // {
-    //     return $this->texte;
-    // }
-    // public function getLien_image() :string 
-    // {
-    //     return $this->lien_image;
-    // }
-    // public function getDate() :string
-    // {
-    //     return $this->date;
-    // }
-    // public function getDate_revision() : string
-    // {
-    //     return $this->date_revision;
-    // }
-    
-}
+    /**donne la date de revision de l'article au format d/m/Y  */
+    public function getDateRevisionFr(): string
+    {
+        return date("d/m/Y", strtotime($this->date_revision));
+    }
+    /**donne le nom et le prenom de l'auteur */
+    public function getNomPrenomAuteur(): string
+    {
 
+        $sql = "SELECT nom, prenom FROM auteurs WHERE " . $this->id_auteur . " = auteurs.id LIMIT 1";
+        $resultat_actualite = $this->pdo->query($sql);
+
+        while ($donnees_actualite = $resultat_actualite->fetch(PDO::FETCH_ASSOC)) {
+            return $donnees_actualite['nom'] . " " . $donnees_actualite['prenom'];
+        }
+        return "";
+    }
+    /**donne les tags de l'article en liste */
+    public function getTags(): string
+    {
+
+        $table_id_tag = explode('&', $this->id_tags);
+        $tags = "<p>";
+        foreach ($table_id_tag as $id_tag) {
+            $sql2 = "SELECT nom FROM tags WHERE " . $id_tag . " = id";
+            $resultat2 = $this->pdo->query($sql2);
+            while ($donnees2 = $resultat2->fetch(PDO::FETCH_ASSOC)) {
+                $tags .= '<span class="tags">#' . $donnees2['nom'] . " </span>";
+            }
+        }
+        return $tags . "</p>";
+    }
+}

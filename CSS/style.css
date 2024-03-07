@@ -4,6 +4,11 @@
 }
 body {
     font-family: sans-serif;
+    margin: 0;
+}
+h1 {
+    color: var(--blue);
+    font-size: 40px;
 }
 a {
     text-decoration: none;
@@ -38,7 +43,6 @@ header a {
 .actualite {
     display: flex;
     flex-direction: column;
-
     width: 300px;
     border: 3px solid var(--blue);
     border-radius: 25px;
@@ -48,11 +52,12 @@ header a {
 .actualite:hover {
     box-shadow: 0 0 10px var(--blue);
     transform: translateY(-5px);
+    filter: brightness(0.9);
     
 }
 .actualite img{
     max-width: 301px;
-    
+    color: #666;
 }
 .actualite_preview_body {
     padding: 10px;
@@ -62,8 +67,8 @@ header a {
 }
 .actu_container {
     padding-top: 50px;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-auto-flow: column;
     gap: 50px;
     overflow-x: scroll;
 }
@@ -115,8 +120,11 @@ footer p {
     padding-top: 50px;
     display: flex;
     flex-direction: column;
-    gap: 50px;
     overflow-x: auto;
+}
+.actu_container_article h1 {
+    color: var(--blue);
+
 }
 form {
     display: flex;
