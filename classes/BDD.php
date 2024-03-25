@@ -10,7 +10,6 @@ class BDD
         $pass = '';
         $port = 3306;
         $charset = 'utf8mb4';
-
         $dsn = "mysql:host=$host; dbname=$db;charset=$charset;port=$port";
         return new PDO($dsn, $user, $pass);
     }

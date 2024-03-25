@@ -16,31 +16,30 @@ class Actualite extends BDD
     public $date_revision;
     /**id de l'auteur */
     public $id_auteur;
-    private $pdo;
 
     /**tags liées à l'actualité */
     public $id_tags;
     /**sources de l'actualité */
     public $sources;
-    public static function get5Actualite($pdo)
+    public static function get5Actualite()
     {
         
         $sql = "SELECT titre,texte,lien_image,date,actualites.id,date_revision,id_auteur,id_tags,sources FROM actualites ORDER BY date DESC LIMIT 5";
-        $resultat = $pdo->query($sql);
+        $resultat = BDD::selectBDD($sql);
         return $resultat;
     }
-    public static function getActualiteArticle($pdo)
+    public static function getActualiteArticle()
     {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
             $sql = "SELECT titre,texte,lien_image,date,actualites.id,date_revision,id_auteur,id_tags,sources FROM actualites WHERE id = " . $id . " ORDER BY date DESC LIMIT 5";
-            $resultat = $pdo->query($sql);
+            $resultat = BDD::selectBDD($sql);
             return $resultat;
         } else {
             header("location: ../index.php");
     }
     }
-    public function __construct(array $values, $pdo)
+    public function __construct(array $values)
     {
         $this->id = $values['id'];
         $this->titre = $values['titre'];
@@ -50,7 +49,6 @@ class Actualite extends BDD
         $this->date_revision = $values['date_revision'];
         $this->id_auteur = $values['id_auteur'];
         $this->id_tags = $values['id_tags'];
-        $this->pdo = $pdo;
     }
     /**Fait la synthse de texte limité a 100caractere */
     public function syntheseTexte(): string

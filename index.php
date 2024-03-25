@@ -1,7 +1,6 @@
 <?php
 
 
-require_once "includes/PDO.php";
 // include "includes/debugger.php";
 require_once "classes/Actualite.php";
 ?>
@@ -20,14 +19,19 @@ require_once "classes/Actualite.php";
 <body>
     <header>
         <?php
-        include 'includes/header-index.php';
+        include 'includes/header.php';
         ?>
     </header>
+
     <main>
         <?php
         if (isset($_GET['envoi']) && $_GET['envoi'] == true) {
             echo "<h1 style='text-align:center;'>Votre message a bien été envoyé!</h1>";
             $_GET['envoi'] = false;
+        }
+        if (isset($_GET['message']) && $_GET['message'] != false) {
+            echo "<h1 style='text-align:center;'>".$_GET['message']."</h1>";
+            $_GET['message'] = false;
         }
         ?>
         <h1> Bienvenue sur les actualité de L'IIA</h1>
@@ -36,9 +40,9 @@ require_once "classes/Actualite.php";
             <?php
             // $sql = "SELECT titre,texte,lien_image,date,actualites.id,date_revision,id_auteur,id_tags,sources FROM actualites ORDER BY date DESC LIMIT 5";
             // $resultat = $pdo->query($sql);
-            $resultat = Actualite::get5Actualite($pdo);
+            $resultat = Actualite::get5Actualite();
             while ($donnees = $resultat->fetch(PDO::FETCH_ASSOC)) {
-                $actualite = new Actualite($donnees,$pdo);
+                $actualite = new Actualite($donnees,);
             ?>
                 <div class="actualite"><a href="pages/article.php?id=<?= $actualite->id ?>">
                         <img src="uploads/<?= $actualite->lien_image ?>" alt="image article" title="image article">
