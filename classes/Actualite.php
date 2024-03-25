@@ -1,5 +1,6 @@
 <?php
-class Actualite
+require_once 'BDD.php';
+class Actualite extends BDD
 {
     /**id de l'actualité */
     public $id;
@@ -23,15 +24,7 @@ class Actualite
     public $sources;
     public static function get5Actualite($pdo)
     {
-        $host = '127.0.0.1';
-        $db = 'iiactualite';
-        $user = 'root';
-        $pass = '';
-        $port = 3306;
-        $charset = 'utf8mb4';
-
-        $dsn = "mysql:host=$host; dbname=$db;charset=$charset;port=$port";
-        $pdo = new PDO($dsn, $user, $pass);
+        
         $sql = "SELECT titre,texte,lien_image,date,actualites.id,date_revision,id_auteur,id_tags,sources FROM actualites ORDER BY date DESC LIMIT 5";
         $resultat = $pdo->query($sql);
         return $resultat;
@@ -79,7 +72,7 @@ class Actualite
     {
 
         $sql = "SELECT nom, prenom FROM auteurs WHERE " . $this->id_auteur . " = auteurs.id LIMIT 1";
-        $resultat_actualite = $this->pdo->query($sql);
+        $resultat_actualite = BDD::selectBDD($sql);
 
         while ($donnees_actualite = $resultat_actualite->fetch(PDO::FETCH_ASSOC)) {
             return $donnees_actualite['nom'] . " " . $donnees_actualite['prenom'];
@@ -93,12 +86,12 @@ class Actualite
         $table_id_tag = explode('&', $this->id_tags);
         $tags = "<p>";
         foreach ($table_id_tag as $id_tag) {
-            $sql2 = "SELECT nom FROM tags WHERE " . $id_tag . " = id";
-            $resultat2 = $this->pdo->query($sql2);
-            while ($donnees2 = $resultat2->fetch(PDO::FETCH_ASSOC)) {
-                $tags .= '<span class="tags">#' . $donnees2['nom'] . " </span>";
+            $sql = "SELECT nom FROM tags WHERE " . $id_tag . " = id";
+            $resultat = BDD::selectBDD($sql);
+            while ($donnees = $resultat->fetch(PDO::FETCH_ASSOC)) {
+                $tags .= '<span class="tags">#' . $donnees['nom'] . " </span>";
             }
         }
-        return $tags . "</p>";
+        return $tags. "</p>";
     }
 }
