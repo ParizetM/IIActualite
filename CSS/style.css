@@ -35,6 +35,7 @@ header {
 
 main {
     padding-top: 200px;
+    margin-left: 10px;
 }
 
 header img {
@@ -202,7 +203,11 @@ form {
     height: auto;
 }
 .menu_body {
+    padding-left: 10px;
     display: none;
+    color: white;
+    gap: 10px;
+
 }
 .menu:hover .menu_body{
     display: flex;
@@ -217,6 +222,12 @@ menu a {
 
 .menu_categorie a{
     text-decoration: underline;
+    color: white;
+
+}
+.menu_sous_categorie{
+    text-decoration: none;
+    color: white;
 }
 
 .menu_sous_categorie::before {
@@ -238,4 +249,14 @@ menu a {
 }
 .menu_edit:hover {
     filter: brightness(0.8);
+}
+.menu-apercu {
+    float: left;
+ }
+.menu-apercu>.menu_body {
+    display: flex;
+ }
+#text-apercu {
+    color: #2c1a5b;
+    margin-bottom: 0;
 }

@@ -8,8 +8,9 @@ class Menu extends BDD
     {
         $this->nom_table = $nom_table;
     }
-    static function issetId(){
-    
+    static function issetId()
+    {
+
         if (isset($_GET['id'])) {
             $tableName = $_GET['id'];
             $sql = "SHOW TABLES LIKE '$tableName'";
@@ -21,12 +22,28 @@ class Menu extends BDD
             }
         } else {
 
-             header("location: ../index.php?message=Erreur de chargement de la page");
-             return "ca marche du tout";
-
+            header("location: ../index.php?message=Erreur de chargement de la page");
+            return "ca marche du tout";
         }
     }
-    function afficherMenu(){  
+    function afficherMenu()
+    {
+?>
+        <div class="menu">
+            <ion-icon name="menu" size="large" title="menu"></ion-icon>
+            <div class="menu_body">
+
+                <?=
+                $this->afficherCategorieMenu();
+                ?>
+                <a href="../pages/edit-menu.php?id=<?= $this->nom_table ?>" class="menu_edit"><ion-icon name="create-outline" size="large" title="modifier"></ion-icon></a>
+            </div>
+        </div>
+    <?php
+    }
+    function afficherCategorieMenu()
+    {
+
         $sql = "SELECT * FROM " . $this->nom_table . " WHERE is_categorie = 1 ORDER BY priorite";
         $resultat = BDD::selectBDD($sql);
         while ($donnees = $resultat->fetch(PDO::FETCH_ASSOC)) {
@@ -40,5 +57,24 @@ class Menu extends BDD
             echo '</ul>';
         }
     }
-    
+    function afficherEditMenu()
+    {
+    ?>
+        <div class="menu menu-apercu">
+            <ion-icon name="menu" size="large" title="menu"></ion-icon>
+            <div class="menu_body">
+
+                <?=
+                $this->afficherCategorieMenu();
+                ?>
+                <a href="../pages/edit-menu.php?id=<?= $this->nom_table ?>" class="menu_edit"></a>
+
+            </div>
+        </div>
+<?php
+    }
+    function getNomMenu()
+    {
+        return $this->nom_table;
+    }
 }
