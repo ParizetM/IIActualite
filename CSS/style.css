@@ -239,6 +239,10 @@ menu a {
     margin: 10px;
     float: right;
 }
+.edit_container {
+    display: flex;
+    flex-direction: column;
+}
 .menu_edit {
     color: white;
     margin: 10px;
@@ -252,6 +256,7 @@ menu a {
 }
 .menu-apercu {
     float: left;
+    width: fit-content;
  }
 .menu-apercu>.menu_body {
     display: flex;
@@ -259,4 +264,58 @@ menu a {
 #text-apercu {
     color: #2c1a5b;
     margin-bottom: 0;
+}
+.tableau-edit td{
+    width: fit-content;
+    height: fit-content;
+    border: 1px solid black;
+}
+.tableau-edit {
+    width: 50%;
+}
+.tableau-edit input {
+    border: none;
+    width: 99%;
+    background-color: transparent;
+}
+.no_border {
+    border: none!important;
+}
+.move_tableau {
+    display: flex;
+    flex-direction: column;
+}
+.move_tableau a{
+    font-size: 0.8rem;
+    
+}
+.boutons_tableau {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    align-items: center;
+    gap: 2px;
+    font-size: 1.1rem;
+}
+.boutons_tableau a {
+    color: var(--blue);
+}   
+.boutons_tableau a:hover,.boutons_tableau button:hover {
+    color: white;
+    background-color: var(--blue);
+}   
+.boutons_tableau button {
+    border: none;
+    background-color: transparent;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--blue);
+}
+.tableaux-edit {
+    display: flex;
+    gap: 10px;
+    
+}
+.tableau-edit {
+    height: fit-content;
 }

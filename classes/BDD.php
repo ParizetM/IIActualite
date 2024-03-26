@@ -19,4 +19,27 @@ class BDD
         $resultat = $pdo->query($sql);
         return $resultat;
     }
+    /**execute la commande $sql fourni */
+    public static function insertBDD($sql)
+    {
+        $pdo = self::connexionBDD();
+        $pdo->exec($sql);
+    }
+    public static function selectFirstBDD($sql)
+    {
+        $pdo = self::connexionBDD();
+        $resultat = $pdo->query($sql);
+        foreach ($resultat as $row) {
+            return $row;
+        }
+    }
+    public static function selectLastBDD($sql)
+    {
+        $pdo = self::connexionBDD();
+        $resultat = $pdo->query($sql);
+        foreach ($resultat as $row) {
+            $last = $row;
+        }
+        return $last;
+    }
 }
