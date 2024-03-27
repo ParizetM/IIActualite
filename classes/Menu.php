@@ -217,27 +217,49 @@ class Menu extends BDD
         </div>
     <?php
     }
-    function moveUp($id, $isCategorie)
+    function move($id, $isCategorie, $direction)
     {
         $sql = "SELECT priorite FROM " . $this->nom_table . " WHERE id = " . $id;
         $priorite = BDD::selectFirstBDD($sql)['priorite'];
-        $sql = "SELECT id FROM " . $this->nom_table . " WHERE is_categorie = " . $isCategorie . " AND priorite < " . $priorite . " ORDER BY priorite DESC";
-        $idDessus = BDD::selectFirstBDD($sql)['id'];
-        $sql = "SELECT id FROM " . $this->nom_table . " WHERE is_categorie = " . $isCategorie . " AND priorite < " . ($priorite - 1);
-        $resultat = BDD::selectBDD($sql);
-        $prioScale = 1;
-        foreach ($resultat as $donnees) {
-            $sql = "SELECT priorite,id FROM " . $this->nom_table . " WHERE id = " . $id;
-            $prioriteActuelle = BDD::selectFirstBDD($sql)['priorite'];
-            $prioScale += 1;
-            $sql = "UPDATE " . $this->nom_table . " SET priorite = " . ($prioriteActuelle - $prioScale) . " WHERE id = " . $donnees['id'];
 
+        if ($direction == 1) {
+            $sql = "SELECT id FROM " . $this->nom_table . " WHERE is_categorie = " . $isCategorie . " AND priorite < " . $priorite . " ORDER BY priorite DESC";
+            $idDessus = BDD::selectFirstBDD($sql)['id'];
+            $sql = "SELECT id FROM " . $this->nom_table . " WHERE is_categorie = " . $isCategorie . " AND priorite < " . ($priorite - 1);
+            $resultat = BDD::selectBDD($sql);
+            $prioScale = 1;
+            foreach ($resultat as $donnees) {
+                $sql = "SELECT priorite,id FROM " . $this->nom_table . " WHERE id = " . $id;
+                $prioriteActuelle = BDD::selectFirstBDD($sql)['priorite'];
+                $prioScale += 1;
+                $sql = "UPDATE " . $this->nom_table . " SET priorite = " . ($prioriteActuelle - $prioScale) . " WHERE id = " . $donnees['id'];
+
+                BDD::insertBDD($sql);
+            }
+            $sql = "UPDATE " . $this->nom_table . " SET priorite = " . $priorite . " WHERE id = " . $idDessus;
+            BDD::insertBDD($sql);
+            $sql = "UPDATE " . $this->nom_table . " SET priorite = " . ($priorite - 1) . " WHERE id = " . $id;
+            BDD::insertBDD($sql);
+        } elseif ($direction == 0) {
+            $sql = "SELECT id FROM " . $this->nom_table . " WHERE is_categorie = " . $isCategorie . " AND priorite > " . $priorite . " ORDER BY priorite ASC";
+            $idDessous = BDD::selectFirstBDD($sql)['id'];
+            $sql = "SELECT id FROM " . $this->nom_table . " WHERE is_categorie = " . $isCategorie . " AND priorite > " . ($priorite + 1);
+            $resultat = BDD::selectBDD($sql);
+            $prioScale = 1;
+            foreach ($resultat as $donnees) {
+                $sql = "SELECT priorite,id FROM " . $this->nom_table . " WHERE id = " . $id;
+                $prioriteActuelle = BDD::selectFirstBDD($sql)['priorite'];
+                $prioScale += 1;
+                $sql = "UPDATE " . $this->nom_table . " SET priorite = " . ($prioriteActuelle + $prioScale) . " WHERE id = " . $donnees['id'];
+
+                BDD::insertBDD($sql);
+            }
+            $sql = "UPDATE " . $this->nom_table . " SET priorite = " . $priorite . " WHERE id = " . $idDessous;
+            BDD::insertBDD($sql);
+            $sql = "UPDATE " . $this->nom_table . " SET priorite = " . ($priorite + 1) . " WHERE id = " . $id;
             BDD::insertBDD($sql);
         }
-        $sql = "UPDATE " . $this->nom_table . " SET priorite = " . $priorite . " WHERE id = " . $idDessus;
-        BDD::insertBDD($sql);
-        $sql = "UPDATE " . $this->nom_table . " SET priorite = " . ($priorite - 1) . " WHERE id = " . $id;
-        BDD::insertBDD($sql);
+
         header("location: ../pages/edit-menu.php?id=" . $this->nom_table);
     }
     private function generateSelectCate($cate_actuelle)
@@ -254,29 +276,6 @@ class Menu extends BDD
         }
         $select .= '</select>';
         return $select;
-    }
-    function MoveDown($id, $isCategorie)
-    {
-        $sql = "SELECT priorite FROM " . $this->nom_table . " WHERE id = " . $id;
-        $priorite = BDD::selectFirstBDD($sql)['priorite'];
-        $sql = "SELECT id FROM " . $this->nom_table . " WHERE is_categorie = " . $isCategorie . " AND priorite > " . $priorite . " ORDER BY priorite ASC";
-        $idDessous = BDD::selectFirstBDD($sql)['id'];
-        $sql = "SELECT id FROM " . $this->nom_table . " WHERE is_categorie = " . $isCategorie . " AND priorite > " . ($priorite + 1);
-        $resultat = BDD::selectBDD($sql);
-        $prioScale = 1;
-        foreach ($resultat as $donnees) {
-            $sql = "SELECT priorite,id FROM " . $this->nom_table . " WHERE id = " . $id;
-            $prioriteActuelle = BDD::selectFirstBDD($sql)['priorite'];
-            $prioScale += 1;
-            $sql = "UPDATE " . $this->nom_table . " SET priorite = " . ($prioriteActuelle + $prioScale) . " WHERE id = " . $donnees['id'];
-
-            BDD::insertBDD($sql);
-        }
-        $sql = "UPDATE " . $this->nom_table . " SET priorite = " . $priorite . " WHERE id = " . $idDessous;
-        BDD::insertBDD($sql);
-        $sql = "UPDATE " . $this->nom_table . " SET priorite = " . ($priorite + 1) . " WHERE id = " . $id;
-        BDD::insertBDD($sql);
-        header("location: ../pages/edit-menu.php?id=" . $this->nom_table);
     }
     function addLigneMenuEditCategorie($nom, $lien)
     {

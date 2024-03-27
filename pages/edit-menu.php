@@ -27,16 +27,16 @@ if (!isset($_GET['verifsuppr'])) {
         $menu->addLigneMenuEditSousCategorie($_GET['nom-add-ligne'], $_GET['lien-add-ligne'], $_GET['nom-categorie']);
     }
     if (isset($_GET['move-up-cate'])) {
-        $menu->moveUp($_GET['move-up-cate'], 1);
+        $menu->move($_GET['move-up-cate'], 1,1);
     }
     if (isset($_GET['move-up-sous-cate'])) {
-        $menu->moveUp($_GET['move-up-sous-cate'], 0);
+        $menu->move($_GET['move-up-sous-cate'], 0,1);
     }
     if (isset($_GET['move-down-cate'])) {
-        $menu->moveDown($_GET['move-down-cate'], 1);
+        $menu->move($_GET['move-down-cate'], 1,0);
     }
     if (isset($_GET['move-down-sous-cate'])) {
-        $menu->moveDown($_GET['move-down-sous-cate'], 0);
+        $menu->move($_GET['move-down-sous-cate'], 0,0);
     }
 }
 ?>
