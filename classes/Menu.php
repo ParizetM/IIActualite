@@ -81,14 +81,14 @@ class Menu extends BDD
     {
         $sql = "SELECT * FROM " . $this->nom_table . " WHERE is_categorie = 1 ORDER BY priorite";
         $resultat = BDD::selectBDD($sql);
-    ?> 
-    <div class="tableaux-edit">
-    <h2>Catégories :</h2>
-    <h2>Sous-catégories :</h2>
-    </div>
-    <div class="tableaux-edit">
+    ?>
+        <div class="tableaux-edit">
+            <h2>Catégories :</h2>
+            <h2>Sous-catégories :</h2>
+        </div>
+        <div class="tableaux-edit">
             <table class="tableau-edit">
-            
+
                 <tr>
                     <td>Nom</td>
                     <td>Lien</td>
@@ -99,16 +99,17 @@ class Menu extends BDD
 
 
                     <tr>
-                        
+
                         <form action="" method="get">
                             <input type="hidden" value="<?= $donnees['id'] ?>" name="id-ligne">
                             <input type="hidden" value="<?= $this->getNomMenu() ?>" name="id">
+                            <input type="hidden" value="0" name="nom-categorie">
                             <td><input type="text" value="<?= $donnees['nom'] ?>" name="nom-ligne"></td>
                             <td><input type="text" value="<?= $donnees['lien'] ?>" name="lien-ligne"></td>
                             <td class="no_border">
                                 <div class="boutons_tableau">
 
-                                    <a href="<?php echo $_SERVER['PHP_SELF']; ?>?id=<?= $this->getNomMenu() ?>&deleteCate=<?= $donnees['id'] ?>" title="Supprimer"><ion-icon name="trash-outline"></ion-icon></a>
+                                    <a href="<?php echo $_SERVER['PHP_SELF']; ?>?id=<?= $this->getNomMenu() ?>&deleteCate=<?= $donnees['id'] ?>&is_categorie=1" title="Supprimer"><ion-icon name="trash-outline"></ion-icon></a>
 
                                     <div class="move_tableau no_border">
                                         <?php
@@ -140,7 +141,7 @@ class Menu extends BDD
                 ?>
                 <form action="" method="get">
                     <input type="hidden" value="<?= $this->getNomMenu() ?>" name="id">
-                    <input type="hidden" value="1" name="add-cate">
+                    <input type="hidden" value="0" name="nom-categorie">
                     <td><input required type="text" placeholder="Nom de catégorie" name="nom-add-ligne"></td>
                     <td><input required type="text" placeholder="Lien de catégorie" value="#" name="lien-add-ligne"></td>
                     <td class="no_border">
@@ -172,7 +173,7 @@ class Menu extends BDD
                             <td class="no_border">
                                 <div class="boutons_tableau">
 
-                                    <a href="<?php echo $_SERVER['PHP_SELF']; ?>?id=<?= $this->getNomMenu() ?>&delete-sous-cate=<?= $donnees['id'] ?>" title="Supprimer"><ion-icon name="trash-outline"></ion-icon></a>
+                                    <a href="<?php echo $_SERVER['PHP_SELF']; ?>?id=<?= $this->getNomMenu() ?>&deleteCate=<?= $donnees['id'] ?>&is_categorie=0" title="Supprimer"><ion-icon name="trash-outline"></ion-icon></a>
 
                                     <div class="move_tableau no_border">
                                         <?php
@@ -204,7 +205,6 @@ class Menu extends BDD
                 ?>
                 <form action="" method="get">
                     <input type="hidden" value="<?= $this->getNomMenu() ?>" name="id">
-                    <input type="hidden" value="1" name="add-sous-cate">
                     <td><input required type="text" placeholder="Nom de catégorie" name="nom-add-ligne"></td>
                     <td><input required type="text" placeholder="Lien de catégorie" value="#" name="lien-add-ligne"></td>
                     <td><?php echo $this->generateSelectCate(0) ?></td>
@@ -277,40 +277,26 @@ class Menu extends BDD
         $select .= '</select>';
         return $select;
     }
-    function addLigneMenuEditCategorie($nom, $lien)
+    function addLigneMenuEditCategorie($nom, $lien, $id_categorie)
     {
-        $sql = "SELECT priorite FROM " . $this->nom_table . " WHERE is_categorie = 1 ORDER BY priorite DESC";
+        $is_categorie = ($id_categorie == 0) ? 1 : 0;
+        $sql = "SELECT priorite FROM " . $this->nom_table . " WHERE is_categorie = " . $is_categorie . " ORDER BY priorite DESC";
         $resultat = BDD::selectFirstBDD($sql)['priorite'];
         $resultat += 1;
-        $sql = "INSERT INTO " . $this->nom_table . " (nom,id_categorie, is_categorie, priorite, lien) VALUES ('" . $nom . "', 0, 1, " . $resultat . ", '" . $lien . "')";
+        $sql = "INSERT INTO " . $this->nom_table . " (nom, id_categorie, is_categorie, priorite, lien) VALUES ('" . $nom . "', " . $id_categorie . ", " . $is_categorie . ", " . $resultat . ", '" . $lien . "')";
         BDD::insertBDD($sql);
         header("location: ../pages/edit-menu.php?id=" . $this->nom_table);
     }
-    function addLigneMenuEditSousCategorie($nom, $lien, $id_categorie)
+    function deleteLigneMenuEdit($id, $is_categorie)
     {
-        $sql = "SELECT priorite FROM " . $this->nom_table . " WHERE is_categorie = 0 ORDER BY priorite DESC";
-        $resultat = BDD::selectFirstBDD($sql)['priorite'];
-        $resultat += 1;
-        $sql = "INSERT INTO " . $this->nom_table . " (nom,id_categorie, is_categorie, priorite, lien) VALUES ('" . $nom . "'," . $id_categorie . ", 0, " . $resultat . ", '" . $lien . "')";
-        BDD::insertBDD($sql);
-        header("location: ../pages/edit-menu.php?id=" . $this->nom_table);
-    }
-    function deleteLigneMenuEditCategorie($id)
-    {
-        $sql = "SELECT id FROM " . $this->nom_table . " WHERE id_categorie = " . $id;
-        $resultat = BDD::selectBDD($sql);
-        $rows = $resultat->rowCount();
-        if ($rows > 0) {
-            header("location: ../pages/edit-menu.php?id=" . $this->nom_table . "&verifsuppr=" . $id);
-            exit();
+        if ($is_categorie == 1) {
+            $sql = "SELECT id FROM " . $this->nom_table . " WHERE id_categorie = " . $id;
+            $resultat = BDD::selectBDD($sql);
+            if ($resultat->rowCount() > 0) {
+                header("location: ../pages/edit-menu.php?id=" . $this->nom_table . "&verifsuppr=" . $id);
+                exit();
+            }
         }
-
-        $sql = "DELETE FROM " . $this->nom_table . " WHERE id = " . $id;
-        BDD::insertBDD($sql);
-        header("location: ../pages/edit-menu.php?id=" . $this->nom_table);
-    }
-    function deleteLigneMenuEditSousCategorie($id)
-    {
         $sql = "DELETE FROM " . $this->nom_table . " WHERE id = " . $id;
         BDD::insertBDD($sql);
         header("location: ../pages/edit-menu.php?id=" . $this->nom_table);
@@ -351,15 +337,13 @@ class Menu extends BDD
             </div>
     <?php
     }
-    function updateLigneMenuEditCategorie($id, $nom, $lien)
+    function updateLigneMenuEdit($id, $nom, $lien, $id_categorie)
     {
-        $sql = "UPDATE " . $this->nom_table . " SET nom = '" . $nom . "', lien = '" . $lien . "' WHERE id = " . $id;
-        BDD::insertBDD($sql);
-        header("location: ../pages/edit-menu.php?id=" . $this->nom_table);
-    }
-    function updateLigneMenuEditSousCate($id, $nom, $lien, $id_categorie)
-    {
-        $sql = "UPDATE " . $this->nom_table . " SET nom = '" . $nom . "', lien = '" . $lien . "', id_categorie = " . $id_categorie . " WHERE id = " . $id;
+        if ($id_categorie == 0) {
+            $sql = "UPDATE " . $this->nom_table . " SET nom = '" . $nom . "', lien = '" . $lien . "' WHERE id = " . $id;
+        } else {
+            $sql = "UPDATE " . $this->nom_table . " SET nom = '" . $nom . "', lien = '" . $lien . "', id_categorie = " . $id_categorie . " WHERE id = " . $id;
+        }
         BDD::insertBDD($sql);
         header("location: ../pages/edit-menu.php?id=" . $this->nom_table);
     }
