@@ -1,5 +1,6 @@
 <?php
 require_once "BDD.php";
+
 class Menu extends BDD
 {
     /**Nom de la table */

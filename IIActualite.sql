@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 26 mars 2024 à 09:53
+-- Généré le : mar. 02 avr. 2024 à 07:53
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -107,11 +107,13 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id`, `nom`, `id_categorie`, `is_categorie`, `priorite`, `lien`) VALUES
-(1, 'articles', 0, 1, 1, '#'),
-(2, 'jpo', 1, 0, 1, '#'),
-(3, 'Baguette', 0, 1, 2, '#'),
-(4, 'oui', 3, 0, 2, '#'),
-(5, 'non', 3, 0, 1, '#');
+(14, 'catégorie 1', 0, 1, 1, '#'),
+(15, 'catégorie 2', 0, 1, 2, '#'),
+(16, 'catégorie 3', 0, 1, 3, '#'),
+(17, 'sous categorie 1.1', 14, 0, 1, '#'),
+(18, 'sous categorie 1.2', 14, 0, 2, '#'),
+(19, 'sous categorie 2.1', 15, 0, 3, '#'),
+(20, 'sous categorie 3.1', 16, 0, 4, '#');
 
 -- --------------------------------------------------------
 
@@ -195,7 +197,7 @@ ALTER TABLE `contacts`
 -- AUTO_INCREMENT pour la table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT pour la table `tags`
